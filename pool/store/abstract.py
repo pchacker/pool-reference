@@ -70,6 +70,10 @@ class AbstractPoolStore(ABC):
         """
 
     @abstractmethod
+    async def auto_delete_partial(self,retetion_time: uint64) -> None:
+        """Auto delete partial"""
+
+    @abstractmethod
     async def add_partial(self, launcher_id: bytes32, timestamp: uint64, difficulty: uint64):
         """Register new partial and update corresponding Farmer's points"""
 
