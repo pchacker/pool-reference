@@ -401,7 +401,12 @@ class Pool:
                     await asyncio.sleep(120)
                     continue
 
-                total_amount_claimed = sum([c.coin.amount for c in coin_records])
+                balance = await self.wallet_rpc_client.get_wallet_balance(self.wallet_id)
+
+                # total_amount_claimed = sum([c.coin.amount for c in coin_records])
+                # Bug fix:If there are too many pool users, paying in multiple batches
+                # will cause the balance to be transferred to the change address.
+                total_amount_claimed = balance["spendable_balance"]
                 pool_coin_amount = int(total_amount_claimed * self.pool_fee)
                 amount_to_distribute = total_amount_claimed - pool_coin_amount
 
